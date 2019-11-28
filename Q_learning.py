@@ -5,6 +5,9 @@ Created on Thu Nov 21 11:11:19 2019
 @author: 33766
 """
 
+#A chaque étape, génération d'un nombre aléatoire entre -1, 0 et 1
+#Pour former le quadruplet (le triplet de l'état de gaja + la polarité de la phrase prononcée)
+
 ######################### GAJA's cat ############################
 
 
