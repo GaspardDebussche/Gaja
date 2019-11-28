@@ -84,8 +84,8 @@ for i in range(len(dataset)):
 #14 - 20 : 1
 
 print(len(dataset))
-transition_matrix = []
 
+transition_matrix = []
 transition_matrix = np.zeros((len(dataset)*3, len(dataset)*3))
 
 for j in range(len(dataset)*3):
