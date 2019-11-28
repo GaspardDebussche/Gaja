@@ -75,23 +75,82 @@ for i in range(len(dataset)):
         else:
             transition_matrix_neutral[i][j] = 0
             
-print(transition_matrix_neutral)
+#print(transition_matrix_neutral)
 
-reward_be_friendly = []
+# Big transition matrix
 
-reward_be_friendly = np.zeros((len(dataset), len(dataset)))
+#0 - 23 : -1
+#7 - 13 : 0
+#14 - 20 : 1
+
+print(len(dataset))
+transition_matrix = []
+
+transition_matrix = np.zeros((len(dataset)*3, len(dataset)*3))
+
+for j in range(len(dataset)*3):
+    if 0<= j <= 23:
+        # Negative sentence
+        for i in range(len(dataset)*3):
+            if 0 <= i <= 23:
+                if dataset['label'][i] == 1 and dataset['label'][j] == 0:
+                    transition_matrix[i][j] = 1
+                elif dataset['label'][i] == -1 and dataset['label'][j] == -1:
+                    transition_matrix[i][j] = 1
+                elif dataset['label'][i] == 0 and dataset['label'][j] == -1:
+                    transition_matrix[i][j] = 1
+                else:
+                    transition_matrix[i][j] = 0
+            else:
+                transition_matrix[i][j] = 0
+    elif 24 <= j <= 48:
+        for i in range(len(dataset)*3):
+            if 24 <= i <= 48:
+                if dataset['label'][i%24] == 1 and dataset['label'][j%24] == 0:
+                    transition_matrix[i][j] = 1
+                elif dataset['label'][i%24] == -1 and dataset['label'][j%24] == 0:
+                    transition_matrix[i][j] = 1
+                elif dataset['label'][i%24] == 0 and dataset['label'][j%24] == 0:
+                    transition_matrix[i][j] = 1
+                else:
+                    transition_matrix[i][j] = 0
+            else:
+                transition_matrix[i][j] = 0
+    else:
+        for i in range(len(dataset)*3):
+            if 49 <= i <= 72:
+                if dataset['label'][i%24] == 1 and dataset['label'][j%24] == 1:
+                    transition_matrix[i][j] = 1
+                elif dataset['label'][i%24] == -1 and dataset['label'][j%24] == 0:
+                    transition_matrix[i][j] = 1
+                elif dataset['label'][i%24] == 0 and dataset['label'][j%24] == 1:
+                    transition_matrix[i][j] = 1
+                else:
+                    transition_matrix[i][j] = 0
+            else:
+                transition_matrix[i][j] = 0
+        
+print(transition_matrix)
+
+# Reward : 
+# 10 : the most positive triplet -> [i,18]
+# -2 : -1 -> 0 ; 0 -> 1
+# -5 : 1 -> 0 ; -1 -> 0 
+
+reward_matrix = []
+reward_matrix = np.zeros((len(dataset), len(dataset)))
 
 for i in range(len(dataset)):
     for j in range(len(dataset)):
         if j == 18:
-            reward_be_friendly[i][j] = 10
+            reward_matrix[i][j] = 10
         elif dataset['label'][i] == 1 and dataset['label'][j] == 1:
-            reward_be_friendly[i][j] = -2
+            reward_matrix[i][j] = -2
         elif dataset['label'][i] == 0 and dataset['label'][j] == 1:
-            reward_be_friendly[i][j] = -2
+            reward_matrix[i][j] = -2
         elif dataset['label'][i] == -1 and dataset['label'][j] == 0:
-            reward_be_friendly[i][j] = -2
+            reward_matrix[i][j] = -2
         else:
-            reward_be_friendly[i][j] = -5
+            reward_matrix[i][j] = -5
             
-print(reward_be_friendly)
+print(reward_matrix)
