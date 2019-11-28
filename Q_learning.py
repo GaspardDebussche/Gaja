@@ -9,6 +9,92 @@ Created on Thu Nov 21 11:11:19 2019
 #Pour former le quadruplet (le triplet de l'état de gaja + la polarité de la phrase prononcée)
 
 ######################### GAJA's cat ############################
+import pandas as pd
+import numpy as np
+import random
+from tqdm import tqdm
+from time import time
+
+dataset = pd.read_csv("./data/labelized_gaja_states.csv")
+
+print(dataset)
+
+transition_matrix = []
+transition_matrix = np.zeros((len(dataset)*3, len(dataset)*3))
+
+for j in range(len(dataset)*3):
+    if 0<= j <= 23:
+        # Negative sentence
+        for i in range(len(dataset)*3):
+            if 0 <= i <= 23:
+                if dataset['label'][i] == 1 and dataset['label'][j] == 0:
+                    transition_matrix[i][j] = 1
+                elif dataset['label'][i] == -1 and dataset['label'][j] == -1:
+                    transition_matrix[i][j] = 1
+                elif dataset['label'][i] == 0 and dataset['label'][j] == -1:
+                    transition_matrix[i][j] = 1
+                else:
+                    transition_matrix[i][j] = 0
+            else:
+                transition_matrix[i][j] = 0
+    elif 24 <= j <= 48:
+        for i in range(len(dataset)*3):
+            if 24 <= i <= 48:
+                if dataset['label'][i%24] == 1 and dataset['label'][j%24] == 0:
+                    transition_matrix[i][j] = 1
+                elif dataset['label'][i%24] == -1 and dataset['label'][j%24] == 0:
+                    transition_matrix[i][j] = 1
+                elif dataset['label'][i%24] == 0 and dataset['label'][j%24] == 0:
+                    transition_matrix[i][j] = 1
+                else:
+                    transition_matrix[i][j] = 0
+            else:
+                transition_matrix[i][j] = 0
+    else:
+        for i in range(len(dataset)*3):
+            if 49 <= i <= 72:
+                if dataset['label'][i%24] == 1 and dataset['label'][j%24] == 1:
+                    transition_matrix[i][j] = 1
+                elif dataset['label'][i%24] == -1 and dataset['label'][j%24] == 0:
+                    transition_matrix[i][j] = 1
+                elif dataset['label'][i%24] == 0 and dataset['label'][j%24] == 1:
+                    transition_matrix[i][j] = 1
+                else:
+                    transition_matrix[i][j] = 0
+            else:
+                transition_matrix[i][j] = 0
+
+# Stochastic
+for i in range(len(transition_matrix)):
+    s=0
+    for j in range(len(transition_matrix)):
+        if transition_matrix[i][j] != 0:
+            s+=1
+    if s>0:
+        for p in range(len(transition_matrix)):
+            transition_matrix[i][p] = transition_matrix[i][p] / s
+        
+        
+# Reward : 
+# 10 : the most positive triplet -> [i,18]
+# -2 : -1 -> 0 ; 0 -> 1
+# -5 : 1 -> 0 ; -1 -> 0 
+
+reward_matrix = []
+reward_matrix = np.zeros((len(dataset), len(dataset)))
+
+for i in range(len(dataset)):
+    for j in range(len(dataset)):
+        if j == 18:
+            reward_matrix[i][j] = 10
+        elif dataset['label'][i] == 1 and dataset['label'][j] == 1:
+            reward_matrix[i][j] = -2
+        elif dataset['label'][i] == 0 and dataset['label'][j] == 1:
+            reward_matrix[i][j] = -2
+        elif dataset['label'][i] == -1 and dataset['label'][j] == 0:
+            reward_matrix[i][j] = -2
+        else:
+            reward_matrix[i][j] = -5
 
 
 print(transition_matrix)
