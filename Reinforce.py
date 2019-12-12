@@ -15,7 +15,11 @@ from time import time
 from tqdm import tqdm
 import random
 
-transition_matrix = np.random.dirichlet([0.5]*23, 23)
+from transition_matrix import transition_matrix
+
+
+#transition_matrix = np.random.dirichlet([0.5]*23, 23)
+
 
 
 nb_questions = 50
