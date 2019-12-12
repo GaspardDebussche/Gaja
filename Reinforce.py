@@ -23,7 +23,7 @@ from transition_matrix import transition_matrix
 
 
 nb_questions = 50
-reward_matrix = np.zeros((23*nb_questions, 23))
+reward_matrix = np.zeros((nb_questions, 23))
 
 reward_matrix[:, 0] = 10
 
@@ -53,7 +53,7 @@ decay_rate = 0.01
 
 #################### Q learning algorithm ########################
 
-qtable = np.zeros((state_size*nb_questions, state_size))
+qtable = np.zeros((nb_questions, state_size))
 
 start_training = time()
 count_1, count_2 = 0, 0
@@ -65,7 +65,7 @@ for episode in tqdm(range(total_episodes)):
     exp_exp_tradeoff = random.uniform(0, 1)
 
     if exp_exp_tradeoff > epsilon:
-        action = np.argmax(qtable[state*nb_questions + question, :])
+        action = np.argmax(qtable[question, :])
         count_1 += 1
 
     else:
@@ -80,20 +80,20 @@ for episode in tqdm(range(total_episodes)):
         exp_exp_tradeoff = random.uniform(0, 1)
 
         if exp_exp_tradeoff > epsilon:
-            new_action = np.argmax(qtable[new_state*nb_questions + new_question, :])
+            new_action = np.argmax(qtable[new_question, :])
             count_1 += 1
 
         else:
             new_action = np.random.choice([i for i in range(state_size)], p=transition_matrix[new_state, :])
             count_2 += 1
 
-        reward = reward_matrix[state*nb_questions + question, action]
+        reward = reward_matrix[question, action]
 
-        qtable[state*nb_questions + question, action] = qtable[state*nb_questions + question, action] + \
+        qtable[question, action] = qtable[question, action] + \
                                             learning_rate * (
                                                     reward +
-                                                    gamma *qtable[new_state*nb_questions + new_question, new_action] -
-                                                    qtable[state*nb_questions + question, action]
+                                                    gamma *qtable[new_question, new_action] -
+                                                    qtable[question, action]
                                                         )
 
         state = new_state
