@@ -24,13 +24,14 @@ no_sense_behaviour = [5, 8, 17, 20]
 #sentence = "show me your pretty blue eyes beautiful cat!"
 #input_string = "you are a little bastard, die shit !"
 
-def reward(input_string, rate = 0.2):
+def reward(input_string, rate = 0.1):
     reward_matrix = np.zeros((23, 23))
     case = 0
     sentence = TextBlob(input_string)
     selection = [i for i in range(0,23)]
     
     # 10-reward choice
+    print(sentence.sentiment.polarity)
     if sentence.sentiment.polarity >= rate:
         selection = positive_behaviour
         case = 1
