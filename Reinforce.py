@@ -28,7 +28,7 @@ reward_matrix = reward(sentence)
 
 state_size, _ = transition_matrix.shape
 
-total_episodes = 10000
+total_episodes = 1000
 total_test_episodes = 100
 max_steps = 99
 
@@ -85,24 +85,26 @@ print(count_1, count_2, qtable)
 
 ######################## Reward system ############################
 
-#rewards = []
+rewards = []
 
-#for episode in range(total_test_episodes):
-#    state = random.randint(0, state_size - 1)
-#    total_rewards = 0
-#
-#
-#        action = np.argmax(qtable[state, :])
-#
-#        new_state = action
-#        reward = reward_matrix[state, action]
-#
-#        total_rewards += reward
-#
-#        if new_state == 0:
-#            rewards.append(total_rewards)
-#            break
-#        state = new_state
-#
-#print('Average score is ', sum(rewards) / total_test_episodes)
-#print('Maximum score is ', max(rewards))
+for episode in range(total_test_episodes):
+    state = random.randint(0, state_size-1)
+    total_rewards = 0
+
+    for step in range(max_steps):
+
+        action = np.argmax(qtable[state,:])
+        
+        new_state = action
+        reward = reward_matrix[state, action]
+        
+        
+        total_rewards += reward
+        
+        if new_state == 0:
+            rewards.append(total_rewards)
+            break
+        state = new_state
+
+print('Average score is ', sum(rewards)/total_test_episodes)
+print('Maximum score is ', max(rewards))
