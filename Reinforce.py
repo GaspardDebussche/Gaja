@@ -8,38 +8,27 @@ Created on Thu Nov 21 11:11:19 2019
 ######################### GAJA's cat ############################
 
 
-
-
 import numpy as np
 from time import time
 from tqdm import tqdm
 import random
 
-from transition_matrix import transition_matrix
-
+from transition_matrix import transition
+from reward_matrix import reward
 
 #transition_matrix = np.random.dirichlet([0.5]*23, 23)
 
 
-
-nb_questions = 50
-reward_matrix = np.zeros((nb_questions, 23))
-
-reward_matrix[:, 0] = 10
+sentence = "you're a really good cat !"
 
 
-for line in reward_matrix:
-    line[1:] = np.random.choice([0, 1], size=(22,), p=[1./3, 2./3])
-    line[1:] = line[1:]*(-3) - 2
-
-
-
-print(reward_matrix)
+transition_matrix = transition()
+reward_matrix = reward(sentence)
 ######################### Constants #############################
 
 state_size, _ = transition_matrix.shape
 
-total_episodes = 50000
+total_episodes = 10000
 total_test_episodes = 100
 max_steps = 99
 
@@ -53,58 +42,40 @@ decay_rate = 0.01
 
 #################### Q learning algorithm ########################
 
-qtable = np.zeros((nb_questions, state_size))
+state_size, action_size = transition_matrix.shape
+
+qtable = np.zeros((state_size, action_size))
 
 start_training = time()
 count_1, count_2 = 0, 0
 for episode in tqdm(range(total_episodes)):
-
-    state = random.randint(0, state_size - 1)
-    question = random.randint(0, nb_questions - 1)
-
-    exp_exp_tradeoff = random.uniform(0, 1)
-
-    if exp_exp_tradeoff > epsilon:
-        action = np.argmax(qtable[question, :])
-        count_1 += 1
-
-    else:
-        action = np.random.choice([i for i in range(state_size)], p=transition_matrix[state, :])
-        count_2 += 1
-
+    state = random.randint(0, state_size-1)
+    
     for step in range(max_steps):
 
-        new_state = action
-        new_question = random.randint(0, nb_questions - 1)
-
-        exp_exp_tradeoff = random.uniform(0, 1)
+        exp_exp_tradeoff = random.uniform(0,1)
 
         if exp_exp_tradeoff > epsilon:
-            new_action = np.argmax(qtable[new_question, :])
+            action = np.argmax(qtable[state,:])
             count_1 += 1
-
+        
         else:
-            new_action = np.random.choice([i for i in range(state_size)], p=transition_matrix[new_state, :])
+            action = np.random.choice([i for i in range(state_size)], p=transition_matrix[state,:])
             count_2 += 1
 
-        reward = reward_matrix[question, action]
+        new_state = action
+        
+        reward = reward_matrix[state, action]
 
-        qtable[question, action] = qtable[question, action] + \
-                                            learning_rate * (
-                                                    reward +
-                                                    gamma *qtable[new_question, new_action] -
-                                                    qtable[question, action]
-                                                        )
-
+        qtable[state, action] = qtable[state, action] + learning_rate * (reward + gamma * 
+                                    np.max(qtable[new_state, :]) - qtable[state, action])
+                
         state = new_state
-        action = new_action
-        question = new_question
+        
 
-
-        if state == 0:
+        if state == 0: 
             break
-
-    epsilon = min_epsilon + (max_epsilon - min_epsilon) * np.exp(-decay_rate * episode)
+    epsilon = min_epsilon + (max_epsilon - min_epsilon)*np.exp(-decay_rate*episode)
     tqdm._instances.clear()
 
 print("Training time is ", time() - start_training)
