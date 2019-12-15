@@ -49,9 +49,9 @@ def recognize_speech_from_mic(recognizer, microphone):
     # adjust the recognizer sensitivity to ambient noise and record audio
     # from the microphone
     with microphone as source:
-        recognizer.adjust_for_ambient_noise(source)
+        #recognizer.adjust_for_ambient_noise(source) 
         recognizer.pause_threshold=1
-        recognizer.adjust_for_ambient_noise(source,duration=1)
+        #recognizer.adjust_for_ambient_noise(source,duration=1)
         recognizer.adjust_for_ambient_noise(source) 
         audio = recognizer.listen(source)
 
@@ -78,14 +78,13 @@ def recognize_speech_from_mic(recognizer, microphone):
     return response
 
 
-#if __name__ == "__main__":
 def sentence_transcription():
     num_sentences = 2
-    prompt_limit = 5 #nb of seconds waiting
+    prompt_limit = 2#nb of seconds waiting
     
     #Create recognizer and mic instances
     recognizer = sr.Recognizer()
-    microphone = sr.Microphone(device_index = 0, sample_rate = 44100, chunk_size = 512)
+    microphone = sr.Microphone(device_index = 1, sample_rate = 44100, chunk_size = 512)
 
     for i in range(num_sentences):
         # get the sentence from the user
