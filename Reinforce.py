@@ -13,18 +13,16 @@ from time import time
 from tqdm import tqdm
 import random
 
-from transition_matrix import transition
-from reward_matrix import reward
-
-#transition_matrix = np.random.dirichlet([0.5]*23, 23)
-
-transition_matrix = transition()
-reward_fonction = reward
+from transition_matrix import transition_m
+from reward_matrix import reward_m
 
 ######################### Constants #############################
 
 
 def reinforcement_learning(sentence):
+    transition_matrix = transition_m()
+    reward_matrix = reward_m(sentence)
+    
     state_size, _ = transition_matrix.shape
 
     total_episodes = 1000
@@ -38,9 +36,6 @@ def reinforcement_learning(sentence):
     max_epsilon = 1.0
     min_epsilon = 0.01
     decay_rate = 0.01
-
-    reward_matrix = reward_fonction(sentence)
-
 
     #################### Q learning algorithm ########################
 
