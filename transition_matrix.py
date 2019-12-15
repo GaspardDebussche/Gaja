@@ -7,9 +7,10 @@ Created on Mon Dec  2 11:42:46 2019
 
 import pandas as pd
 import numpy as np
+
 dataset = pd.read_csv("./data/labelized_states.csv")
 
-def transition():
+def transition_m():
     transition_matrix = np.zeros((len(dataset), len(dataset)))
     
     for i in range(len(dataset)):
@@ -18,14 +19,16 @@ def transition():
                 abs(dataset['eyes'][i] - dataset['eyes'][j]) == 0 and
                 abs(dataset['voice'][i]- dataset['voice'][j]) == 0):
                 transition_matrix[i][j] = 1
-            if (abs(dataset['paw'][i]-dataset['paw'][j]) == 0 and 
+            elif (abs(dataset['paw'][i]-dataset['paw'][j]) == 0 and 
                 abs(dataset['eyes'][i] - dataset['eyes'][j]) <= 1 and
                 abs(dataset['voice'][i]- dataset['voice'][j]) == 0):
                 transition_matrix[i][j] = 1
-            if (abs(dataset['paw'][i]-dataset['paw'][j]) == 0 and 
+            elif (abs(dataset['paw'][i]-dataset['paw'][j]) == 0 and 
                 abs(dataset['eyes'][i] - dataset['eyes'][j]) == 0 and
                 abs(dataset['voice'][i]- dataset['voice'][j]) <= 1):
                 transition_matrix[i][j] = 1
+            else:
+                transition_matrix[i][j] = 0
                 
     for i in range(len(dataset)):
         s=0
@@ -36,3 +39,4 @@ def transition():
             transition_matrix[i][j] = transition_matrix[i][j]/s
             
     return(transition_matrix)
+
