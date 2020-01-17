@@ -85,7 +85,7 @@ def sentence_transcription():
     #Create recognizer and mic instances
     recognizer = sr.Recognizer()
     print(sr.Microphone.list_microphone_names())
-    microphone = sr.Microphone(device_index = 0, sample_rate = 44100, chunk_size = 512)
+    microphone = sr.Microphone(device_index = 2, sample_rate = 44100, chunk_size = 512)
 
     for i in range(num_sentences):
         # get the sentence from the user
