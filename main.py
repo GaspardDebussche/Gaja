@@ -3,6 +3,7 @@ from speech import sentence_transcription
 from reward_matrix import dataset
 import time
 from LED import led_management
+from sound import sound_management
 
 state = 0
 while True:
@@ -13,6 +14,7 @@ while True:
     for i in reinforce_variables[0]:
         print(dataset.iloc[i])
         led_management(dataset.iloc[i]['eyes'])
+        sound_management(dataset.iloc[i]['voice'])
         print("Paw is {}".format('up' if dataset.iloc[i]['paw'] == 0 else 'down'))
         state = i
     time.sleep(3)
