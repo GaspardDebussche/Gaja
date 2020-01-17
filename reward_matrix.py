@@ -10,12 +10,14 @@ import pandas as pd
 import numpy as np
 from textblob import TextBlob
 import random
-import nltk
+from nltk.stem import WordNetLemmatizer
+from nltk.tokenize import RegexpTokenizer
+  
 
 dataset = pd.read_csv("./data/labelized_states.csv")
 
 lexicon = {"green" : [3, 4, 5, 6, 15, 16, 17, 18], 
-           "eyes" : [3, 4, 5, 6, 7, 8, 9, 10, 15, 16, 17, 18, 19, 20, 21, 22],
+           "eye" : [3, 4, 5, 6, 7, 8, 9, 10, 15, 16, 17, 18, 19, 20, 21, 22],
            "red": [7, 8, 9, 10, 19, 20, 21, 22], 
            "paw": [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22], 
            "sound": [0, 1, 2, 4, 5, 6, 8, 9, 10, 12, 13, 14, 16, 17, 18, 20, 21, 22], 
@@ -60,8 +62,8 @@ no_sense_behaviour = [5, 8, 17, 20]
 #        
 #print(positive_behaviour, interrogative_behaviour, negative_behaviour, no_sense_behaviour)
 
-#sentence = "show me your pretty blue eyes beautiful cat!"
 #input_string = "you are a little bastard, die shit !"
+#input_string = "show me your pretty blue eyes beautiful cat!"
 
 def reward_m(input_string, rate = 0.2):
     reward_matrix = np.zeros((23, 23))
@@ -80,10 +82,14 @@ def reward_m(input_string, rate = 0.2):
     if -rate < sentence.sentiment.polarity < rate:
         selection = interrogative_behaviour
         case = 0
-    for w in nltk.word_tokenize(input_string):
+    
+    lemmatizer = WordNetLemmatizer() 
+    tokenizer = RegexpTokenizer(r'\w+')
+    for w in tokenizer.tokenize(input_string):
+        w = lemmatizer.lemmatize(w)
+        print(w)
         if w in lexicon.keys():
-            if sentence.sentiment.polarity >= 0.2:
-                selection = list(set(selection) & set(lexicon[w]))
+            selection = list(set(selection) & set(lexicon[w]))
 
 # label
 # -2 no sense -1 negative 0 interrogative 1 positive
@@ -112,5 +118,4 @@ def reward_m(input_string, rate = 0.2):
     reward_matrix[:,r] = 10
     return(reward_matrix)
 
-
-#print(reward(input_string)) 
+#reward = reward_m(input_string)
