@@ -13,8 +13,13 @@ Created on Wed Nov 27 15:02:09 2019
 #If your system has no default microphone (such as on a RaspberryPi), 
 #or you want to use a microphone other than the default, you will need 
 #to specify which one to use by supplying a device index. You can get 
-#a list of microphone names by calling the list_microphone_names() 
+#a list of microphone names by calling the list_microphone_names()
 #static method of the Microphone class.
+
+
+import speech_recognition as sr
+
+
 
 #print(sr.Microphone.list_microphone_names())
 #mic = sr.Microphone(device_index=3)
@@ -22,10 +27,8 @@ Created on Wed Nov 27 15:02:09 2019
 #with mic as source:
 #    r.adjust_for_ambient_noise(source)
 #    audio = r.listen(source)
-#    
+#
 #r.recognize_google(audio)
-
-import speech_recognition as sr
 
 def recognize_speech_from_mic(recognizer, microphone):
     """Transcribe speech from recorded from `microphone`.
@@ -51,6 +54,7 @@ def recognize_speech_from_mic(recognizer, microphone):
         recognizer.adjust_for_ambient_noise(source) # #  analyze the audio source for 1 second
         audio = recognizer.listen(source)
 
+    print(type(audio))
     # set up the response object
     response = {
         "success": True,
@@ -80,7 +84,8 @@ def sentence_transcription():
     
     #Create recognizer and mic instances
     recognizer = sr.Recognizer()
-    microphone = sr.Microphone(device_index = 1, sample_rate = 44100, chunk_size = 512)
+    print(sr.Microphone.list_microphone_names())
+    microphone = sr.Microphone(device_index = 0, sample_rate = 44100, chunk_size = 512)
 
     for i in range(num_sentences):
         # get the sentence from the user
@@ -111,3 +116,4 @@ def sentence_transcription():
 
         return sentence["transcription"]
 
+sentence_transcription()
