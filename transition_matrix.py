@@ -15,12 +15,12 @@ def transition_m():
     
     for i in range(len(dataset)):
         for j in range(len(dataset)):
-            if (abs(dataset['paw'][i]-dataset['paw'][j]) <= 1 and 
+            if (abs(dataset['paw'][i]-dataset['paw'][j]) <= 2 and 
                 abs(dataset['eyes'][i] - dataset['eyes'][j]) == 0 and
                 abs(dataset['voice'][i]- dataset['voice'][j]) == 0):
                 transition_matrix[i][j] = 1
             elif (abs(dataset['paw'][i]-dataset['paw'][j]) == 0 and 
-                abs(dataset['eyes'][i] - dataset['eyes'][j]) <= 1 and
+                abs(dataset['eyes'][i] - dataset['eyes'][j]) <= 2 and
                 abs(dataset['voice'][i]- dataset['voice'][j]) == 0):
                 transition_matrix[i][j] = 1
             elif (abs(dataset['paw'][i]-dataset['paw'][j]) == 0 and 
