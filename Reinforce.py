@@ -19,7 +19,7 @@ from reward_matrix import reward_m
 ######################### Constants #############################
 
 
-def reinforcement_learning(sentence):
+def reinforcement_learning(sentence, input_state):
     transition_matrix = transition_m()
     reward_matrix = reward_m(sentence)
     
@@ -85,7 +85,7 @@ def reinforcement_learning(sentence):
     ######################## Reward system ############################
 
     rewards = []
-    state = random.randint(0, state_size-1)
+    state = input_state
     total_rewards = 0
     states = [state]
 
