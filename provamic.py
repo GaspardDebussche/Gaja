@@ -22,6 +22,7 @@ frames = []
 for ii in range(0,int((samp_rate/chunk)*record_secs)):
     data = stream.read(chunk)
     frames.append(data)
+    print(type(data))
 
 print("finished recording")
 
