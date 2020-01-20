@@ -9,6 +9,8 @@ import time
 from LED import led_management
 from sound import sound_management
 
+""" EXECUTION """
+
 file = open("record.txt", 'a')
 file.write(input())
 
