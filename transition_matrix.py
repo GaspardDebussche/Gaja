@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Mon Dec  2 11:42:46 2019
 
-@author: 33766
-"""
-
+""" IMPORTS """
 import pandas as pd
 import numpy as np
 
+#Dataset loading
 dataset = pd.read_csv("./data/labelized_states.csv")
+
+""" TRANSITION MATRIX DEFINITION """
 
 def transition_m():
     transition_matrix = np.zeros((len(dataset), len(dataset)))
