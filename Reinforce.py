@@ -1,12 +1,8 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Thu Nov 21 11:11:19 2019
-
-@author: GaspardDebussche
-"""
 
 ######################### GAJA's cat ############################
 
+""" IMPORTS """
 
 import numpy as np
 from time import time
@@ -16,8 +12,7 @@ import random
 from transition_matrix import transition_m
 from reward_matrix import reward_m
 
-######################### Constants #############################
-
+""" REINFORCEMENT LEARNING """
 
 def reinforcement_learning(sentence, input_state):
     transition_matrix = transition_m()
@@ -104,7 +99,6 @@ def reinforcement_learning(sentence, input_state):
             rewards.append(total_rewards)
             break
         state = new_state
-
 
     #print(states)
     return states, qtable, reward_matrix
