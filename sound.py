@@ -1,11 +1,15 @@
+# -*- coding: utf-8 -*-
+
+""" IMPORTS """
+
 import pygame
+
+""" SOUND MANAGEMENT """
 
 pygame.mixer.init()
 
-
 #while pygame.mixer.music.get_busy() == True:
 #    pass
-
 
 def sound_management(state):
     print("Voice state: {}".format(state))
