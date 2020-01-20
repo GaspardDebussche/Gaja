@@ -1,10 +1,15 @@
+# -*- coding: utf-8 -*-
+
+""" IMPORTS """
+
 import RPi.GPIO as GPIO
 import time
+
+""" LED MANAGEMENT """
+
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 GPIO.setup(18, GPIO.OUT)
-
-
 
 def led_management(state):
     print("Eye state: {}".format(state))
