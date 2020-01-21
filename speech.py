@@ -54,7 +54,6 @@ def recognize_speech_from_mic(recognizer, microphone):
         recognizer.adjust_for_ambient_noise(source) # #  analyze the audio source for 1 second
         audio = recognizer.listen(source)
 
-    print(type(audio))
     # set up the response object
     response = {
         "success": True,
@@ -84,7 +83,6 @@ def sentence_transcription():
     
     #Create recognizer and mic instances
     recognizer = sr.Recognizer()
-    print(sr.Microphone.list_microphone_names())
     microphone = sr.Microphone(device_index = 2, sample_rate = 44100, chunk_size = 512)
 
     for i in range(num_sentences):
@@ -99,7 +97,6 @@ def sentence_transcription():
         for j in range(prompt_limit):
             print("You can talk\n")
             sentence = recognize_speech_from_mic(recognizer, microphone)
-            print(sentence)
             if sentence["transcription"]:
                 break
             if not sentence["success"]:

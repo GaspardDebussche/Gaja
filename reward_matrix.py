@@ -19,8 +19,9 @@ dataset = pd.read_csv("./data/labelized_states.csv")
 lexicon = {"green" : [3, 4, 5, 6, 15, 16, 17, 18], 
            "eye" : [3, 4, 5, 6, 7, 8, 9, 10, 15, 16, 17, 18, 19, 20, 21, 22],
            "red": [7, 8, 9, 10, 19, 20, 21, 22], 
-           "paw": [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22], 
-           "dough": [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22],
+           "paw": [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22],
+           "hand": [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22],
+           "foot": [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22],
            "sound": [0, 1, 2, 4, 5, 6, 8, 9, 10, 12, 13, 14, 16, 17, 18, 20, 21, 22], 
            "tell": [0, 1, 2, 4, 5, 6, 8, 9, 10, 12, 13, 14, 16, 17, 18, 20, 21, 22],
            "discuss": [0, 1, 2, 4, 5, 6, 8, 9, 10, 12, 13, 14, 16, 17, 18, 20, 21, 22],
@@ -73,14 +74,14 @@ def reward_m(input_string, rate = 0.2):
     selection = [i for i in range(0,23)]
     
     # 10-reward choice
-    print(sentence.sentiment.polarity)
-    if sentence.sentiment.polarity >= rate:
+    print("Sentiment is:", sentence.sentiment.polarity)
+    if sentence.sentiment.polarity > rate:
         selection = positive_behaviour
         case = 1
-    if sentence.sentiment.polarity <= -rate:
+    if sentence.sentiment.polarity < -rate:
         selection = negative_behaviour
         case = -1
-    if -rate < sentence.sentiment.polarity < rate:
+    if -rate <= sentence.sentiment.polarity <= rate:
         selection = interrogative_behaviour
         case = 0
     
@@ -88,7 +89,6 @@ def reward_m(input_string, rate = 0.2):
     tokenizer = RegexpTokenizer(r'\w+')
     for w in tokenizer.tokenize(input_string):
         w = lemmatizer.lemmatize(w)
-        print(w)
         if w in lexicon.keys():
             selection = list(set(selection) & set(lexicon[w]))
 
