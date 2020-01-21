@@ -8,22 +8,26 @@ import pygame
 
 pygame.mixer.init()
 
-#while pygame.mixer.music.get_busy() == True:
-#    pass
 
 def sound_management(state):
     print("Voice state: {}".format(state))
-    if state==-1:
-        pygame.mixer.music.load("/home/pi/Documents/Gaja/sounds/bad.mp3")
+    if state == -1:
+        pygame.mixer.music.load("/home/pi/Documents/Gaja/sounds/bad1.mp3")
         pygame.mixer.music.set_volume(1.0)
         pygame.mixer.music.play()
+        while pygame.mixer.music.get_busy() == True:
+            pass
 
-    if state==1:
+    if state == 1:
         pygame.mixer.music.load("/home/pi/Documents/Gaja/sounds/normal.mp3")
         pygame.mixer.music.set_volume(1.0)
         pygame.mixer.music.play()
+        while pygame.mixer.music.get_busy() == True:
+            pass
 
-    if state==2:
+    if state == 2:
         pygame.mixer.music.load("/home/pi/Documents/Gaja/sounds/good.mp3")
         pygame.mixer.music.set_volume(1.0)
         pygame.mixer.music.play()
+        while pygame.mixer.music.get_busy() == True:
+            pass
